@@ -1,0 +1,17 @@
+{
+  "id": "./",
+  "name": "روزِ من - برنامه‌ریز شخصی",
+  "short_name": "روزِ من",
+  "description": "برنامه‌ریز هفتگی و یادآوری‌ها با تقویم شمسی و ذخیرهٔ خصوصی روی دستگاه",
+  "lang": "fa",
+  "dir": "rtl",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f8f8",
+  "theme_color": "#255b67",
+  "icons": [
+    { "src": "./icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "./icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

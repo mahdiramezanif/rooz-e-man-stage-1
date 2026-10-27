@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#255b67" />
+  <meta name="description" content="روزِ من؛ برنامه‌ریز هفتگی و یادآوری‌های شمسی با ذخیرهٔ محلی و امکان کار آفلاین." />
+  <meta name="color-scheme" content="light" />
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="icon" type="image/png" href="./icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="./icons/icon-192.png" />
+  <link rel="stylesheet" href="./styles.css" />
+  <title>روزِ من | برنامه‌ریزی و اعلان‌های هوشمند</title>
+  <script src="./app.js" defer></script>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-icon" aria-hidden="true">☀</div>
+        <div>
+          <div class="brand-title">روزِ من</div>
+          <div class="brand-subtitle">برنامه‌ریز شخصیِ شمسی</div>
+        </div>
+      </div>
+      <span class="local-tag"><span class="local-dot" aria-hidden="true"></span> ذخیره روی این دستگاه</span>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="welcomeTitle">
+        <div>
+          <span class="eyebrow">نسخهٔ ۳ · اعلان‌های اندروید و تکرار شمسی</span>
+          <h1 id="welcomeTitle">هفته‌ات را به سبک خودت بچین.</h1>
+          <p>کارهای هر روز را با ساعت مشخص ثبت کن، هفته‌های آینده را ببین و برنامه‌ات را هر وقت خواستی تغییر بده.</p>
+        </div>
+        <button id="newTaskHero" class="primary-btn hero-button" type="button"><span aria-hidden="true">＋</span> برنامهٔ جدید</button>
+      </section>
+
+      <nav class="quick-nav" aria-label="بخش‌های برنامه">
+        <a href="#plannerHeading">◫ برنامهٔ هفتگی</a>
+        <a href="#remindersHeading">◉ یادآوری‌ها</a>
+        <a href="#notificationsHeading">🔔 اعلان‌ها</a>
+      </nav>
+
+      <section class="planner-panel" aria-labelledby="plannerHeading">
+        <div class="planner-heading">
+          <div>
+            <span class="section-kicker">تقویم من</span>
+            <h2 id="plannerHeading">برنامهٔ هفتگی</h2>
+          </div>
+          <button id="todayBtn" type="button" class="outline-btn">رفتن به این هفته</button>
+        </div>
+
+        <div class="week-nav" aria-label="جابجایی بین هفته‌ها">
+          <button type="button" id="prevWeek" class="nav-btn" aria-label="هفتهٔ قبل">❮ <span>هفتهٔ قبل</span></button>
+          <div class="week-label">
+            <strong id="weekTitle">در حال بارگذاری…</strong>
+            <span id="weekSubtitle">شنبه تا جمعه</span>
+          </div>
+          <button type="button" id="nextWeek" class="nav-btn"><span>هفتهٔ بعد</span> ❯</button>
+        </div>
+
+        <form class="jump-row" id="jumpForm" aria-label="رفتن به تاریخ دلخواه شمسی">
+          <span class="jump-caption">پرش به تاریخ شمسی:</span>
+          <label for="jumpYear">سال <input id="jumpYear" type="text" inputmode="numeric" maxlength="4" required aria-label="سال شمسی" /></label>
+          <label for="jumpMonth">ماه <select id="jumpMonth" aria-label="ماه شمسی"></select></label>
+          <label for="jumpDay">روز <select id="jumpDay" aria-label="روز شمسی"></select></label>
+          <button class="jump-btn" type="submit">نمایش هفته</button>
+        </form>
+
+        <div class="summary" aria-label="خلاصهٔ هفته">
+          <div class="summary-item"><span>کل برنامه‌ها</span><strong id="totalCount">۰</strong></div>
+          <div class="summary-item"><span>انجام‌شده</span><strong id="doneCount">۰</strong></div>
+          <div class="summary-item"><span>باقی‌مانده</span><strong id="remainingCount">۰</strong></div>
+        </div>
+
+        <div id="weekGrid" class="week-grid" aria-live="polite"></div>
+      </section>
+
+
+      <section class="reminder-panel" aria-labelledby="remindersHeading" id="remindersSection">
+        <div class="planner-heading reminder-panel-head">
+          <div>
+            <span class="section-kicker">کارهای مهم را از یاد نبر</span>
+            <h2 id="remindersHeading">یادآوری‌های من</h2>
+            <p class="section-description">برای هر یادآوری، تاریخ شمسی و ساعت دلخواه مشخص کن؛ حتی برای ماه‌ها و سال‌های آینده.</p>
+          </div>
+          <button type="button" id="newReminderBtn" class="primary-btn">＋ یادآوری جدید</button>
+        </div>
+        <div class="reminder-summary" aria-label="خلاصهٔ یادآوری‌ها">
+          <div><span>در انتظار</span><strong id="pendingReminders">۰</strong></div>
+          <div><span>سررسید گذشته</span><strong id="overdueReminders">۰</strong></div>
+          <div><span>انجام‌شده</span><strong id="completedReminders">۰</strong></div>
+        </div>
+        <div class="reminders-toolbar">
+          <div class="filter-group" role="group" aria-label="فیلتر یادآوری‌ها">
+            <button class="filter-btn selected" type="button" data-filter="pending" aria-pressed="true">در انتظار</button>
+            <button class="filter-btn" type="button" data-filter="done" aria-pressed="false">انجام‌شده</button>
+            <button class="filter-btn" type="button" data-filter="all" aria-pressed="false">همه</button>
+          </div>
+          <span class="reminder-filter-caption" id="reminderListCount" aria-live="polite"></span>
+        </div>
+        <div id="reminderList" class="reminder-list" aria-live="polite"></div>
+        <p class="reminder-warning">در نسخهٔ اندروید اعلان‌ها حتی در حالت بسته بودن برنامه زمان‌بندی می‌شوند؛ نسخهٔ مرورگر فقط برنامه‌ها را ثبت می‌کند و اعلان آفلاین ندارد.</p>
+      </section>
+
+      <section class="notification-panel" aria-labelledby="notificationsHeading">
+        <div class="planner-heading">
+          <div><span class="section-kicker">اعلان‌های مهم من</span><h2 id="notificationsHeading">صندوق اعلان‌ها</h2>
+          <p class="section-description">اعلان‌های تحویل‌شده تا زمان زدن «مشاهده شد» در این فهرست باقی می‌مانند.</p></div>
+          <strong class="unread-count" id="inboxCount">۰</strong>
+        </div>
+        <p class="native-status" id="nativeStatus">در حال بررسی وضعیت مجوزها…</p>
+        <div class="notification-actions">
+          <button type="button" class="primary-btn" id="permissionBtn">فعال‌سازی مجوز اعلان و هشدار</button>
+          <button type="button" class="outline-btn" id="testNotificationBtn">ارسال اعلان آزمایشی</button>
+          <button type="button" class="outline-btn" id="refreshInboxBtn">↻ به‌روزرسانی صندوق</button>
+        </div>
+        <div id="notificationInbox" class="notification-inbox"></div>
+        <p class="reminder-warning">اندروید ممکن است اجازهٔ پاک‌کردن اعلان را از نوار اعلان‌ها بدهد؛ پاک‌کردن آن از نوار، به معنی «مشاهده شد» نیست و سابقهٔ آن تا تأیید تو در این صندوق باقی می‌ماند.</p>
+      </section>
+
+      <section class="data-panel" aria-labelledby="dataTitle">
+        <div>
+          <h2 id="dataTitle">اطلاعاتت، روی گوشی خودت</h2>
+          <p>برنامه‌ها و یادآوری‌ها در حافظهٔ همین مرورگر و همین نشانی سایت ذخیره می‌شوند. برای اطمینان، هر چند وقت یک‌بار یک نسخهٔ پشتیبان بگیر.</p>
+        </div>
+        <div class="data-actions">
+          <button id="exportBtn" type="button" class="outline-btn">↓ دریافت پشتیبان</button>
+          <button id="importBtn" type="button" class="outline-btn">↑ بازیابی پشتیبان</button>
+          <input id="importFile" type="file" accept=".json,application/json" hidden />
+        </div>
+      </section>
+      <p class="footnote">مرحلهٔ سوم: اعلان‌ها و تکرار شمسی در اپ بومی اندروید فعال‌اند؛ بدون نصب APK، اعلان آفلاین تضمین نمی‌شود.</p>
+    </main>
+  </div>
+
+  <dialog id="taskDialog" aria-labelledby="dialogTitle" class="task-dialog">
+    <form id="taskForm" novalidate>
+      <div class="dialog-heading">
+        <div>
+          <span class="section-kicker">برنامهٔ شخصی</span>
+          <h2 id="dialogTitle">برنامهٔ جدید</h2>
+        </div>
+        <button id="closeDialog" class="close-btn" type="button" aria-label="بستن">×</button>
+      </div>
+      <input type="hidden" id="taskId" />
+      <label class="field-label" for="taskTitle">عنوان برنامه <span class="required">*</span></label>
+      <input id="taskTitle" name="title" type="text" maxlength="100" placeholder="مثلاً مطالعه، جلسه یا پیاده‌روی" required />
+
+      <label class="field-label" for="taskDay">روز و تاریخ شمسی <span class="required">*</span></label>
+      <select id="taskDay" name="day" required></select>
+
+      <div class="time-row">
+        <div><label class="field-label" for="taskStart">از ساعت <span class="required">*</span></label><input type="time" id="taskStart" name="start" value="09:00" required /></div>
+        <div><label class="field-label" for="taskEnd">تا ساعت <span class="required">*</span></label><input type="time" id="taskEnd" name="end" value="10:00" required /></div>
+      </div>
+
+      <label class="field-label" for="taskNotify">اعلان این برنامه</label>
+      <select id="taskNotify"><option value="off">بدون اعلان</option><option value="0">هنگام شروع</option><option value="5">۵ دقیقه قبل</option><option value="15">۱۵ دقیقه قبل</option><option value="30">۳۰ دقیقه قبل</option><option value="60">۱ ساعت قبل</option></select>
+      <label class="field-label" for="taskRepeat">تکرار اعلان (نه خودِ برنامه)</label>
+      <select id="taskRepeat"><option value="none">بدون تکرار</option><option value="weekly">هفتگی</option><option value="monthly">ماهانهٔ شمسی</option><option value="yearly">سالانهٔ شمسی</option></select>
+      <label class="field-label" for="taskNotes">توضیحات (اختیاری)</label>
+      <textarea id="taskNotes" name="notes" rows="3" maxlength="2000" placeholder="هر نکته‌ای که دوست داری…"></textarea>
+      <div id="formError" class="form-error" role="alert" hidden></div>
+      <div class="dialog-actions">
+        <button type="button" class="outline-btn" id="cancelTask">انصراف</button>
+        <button type="submit" class="primary-btn" id="saveTask">ذخیرهٔ برنامه</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="reminderDialog" aria-labelledby="reminderDialogTitle" class="task-dialog reminder-dialog">
+    <form id="reminderForm" novalidate>
+      <div class="dialog-heading">
+        <div>
+          <span class="section-kicker">یادآوری شخصی</span>
+          <h2 id="reminderDialogTitle">یادآوری جدید</h2>
+        </div>
+        <button id="closeReminderDialog" class="close-btn" type="button" aria-label="بستن">×</button>
+      </div>
+      <input id="reminderId" type="hidden" />
+      <label class="field-label" for="reminderTitle">عنوان یادآوری <span class="required">*</span></label>
+      <input id="reminderTitle" type="text" maxlength="100" required placeholder="مثلاً تماس با پزشک یا پرداخت قبض" />
+      <label class="field-label" for="reminderYear">تاریخ یادآوری به شمسی <span class="required">*</span></label>
+      <div class="reminder-date-fields">
+        <div><label for="reminderYear" class="mini-label">سال</label><input id="reminderYear" type="text" inputmode="numeric" maxlength="4" required /></div>
+        <div><label for="reminderMonth" class="mini-label">ماه</label><select id="reminderMonth" required></select></div>
+        <div><label for="reminderDay" class="mini-label">روز</label><select id="reminderDay" required></select></div>
+      </div>
+      <div class="inline-date-actions">
+        <span id="reminderDatePreview" aria-live="polite">تاریخ یادآوری</span>
+        <button id="reminderToday" type="button" class="text-btn">امروز</button>
+      </div>
+      <label class="field-label" for="reminderTime">ساعت یادآوری <span class="required">*</span></label>
+      <input id="reminderTime" type="time" value="09:00" required />
+      <label class="switch-line"><input id="reminderNotify" type="checkbox" checked /> <span>فعال‌بودن اعلان این یادآوری</span></label>
+      <label class="field-label" for="reminderRepeat">تکرار اعلان</label>
+      <select id="reminderRepeat"><option value="none">بدون تکرار</option><option value="weekly">هفتگی</option><option value="monthly">ماهانهٔ شمسی</option><option value="yearly">سالانهٔ شمسی</option></select>
+      <label class="field-label" for="reminderNotes">توضیحات (اختیاری)</label>
+      <textarea id="reminderNotes" rows="3" maxlength="2000" placeholder="جزئیات یا نکته‌هایی که باید یادت بماند…"></textarea>
+      <p class="dialog-hint">تاریخ تکرار ماهانه/سالانه شمسی است. اگر روز انتخابی در ماه مقصد وجود نداشته باشد، آخرین روز همان ماه انتخاب می‌شود.</p>
+      <div id="reminderFormError" class="form-error" role="alert" hidden></div>
+      <div class="dialog-actions">
+        <button id="cancelReminder" type="button" class="outline-btn">انصراف</button>
+        <button id="saveReminder" type="submit" class="primary-btn">ذخیرهٔ یادآوری</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
